@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="ProjectionMapping.Controls.CuesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="300" Unloaded="CueControlUnloaded" Loaded="CuesControl_OnLoaded">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="cuesCollection"></CollectionViewSource>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="lvCues"  Grid.Row="0"  ItemsSource="{Binding Source={StaticResource cuesCollection}}" SelectionMode="Single" SelectionChanged="lvCues_SelectionChanged" > 
+        </ListBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="2.5">
+            <TextBox x:Name="txtBoxCue" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Width="150"></TextBox>
+            <Button Width="35" Click="AddCueLine">+</Button>
+            <Button Width="35" Click="RemoveCueLine">-</Button>
+            <Button Width="35" Click="MoveUpClick">up</Button>
+            <Button Width="35" Click="MoveDownClick">down</Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Width="50" Click="CueNextClick">Next</Button>
+            <Button Width="50" Click="CuePrevClick">Previous</Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

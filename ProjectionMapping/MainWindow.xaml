@@ -1,0 +1,259 @@
+﻿<Window x:Class="ProjectionMapping.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:l="clr-namespace:ProjectionMapping.Controls"
+        xmlns:c="clr-namespace:ProjectionMapping"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Background="#2d2d2d" Foreground="White"
+        Title="MainWindow" Height="600" Width="800" x:Name="configWindow" 
+        KeyUp="configWindow_KeyUp" Closing="MainWindow_OnClosing"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <CollectionViewSource x:Key="SurfacesCollection"></CollectionViewSource>
+        <!-- ReSharper disable once InconsistentNaming -->
+        <CollectionViewSource x:Key="mediaCollection"></CollectionViewSource>
+        <CollectionViewSource x:Key="sourcesCollection"></CollectionViewSource>
+        <c:InputTypeDataTemplateSelector x:Key="sourceDataTemplateSelector"></c:InputTypeDataTemplateSelector>
+        <DataTemplate x:Key="sourceStillTemplate">
+            <Border BorderThickness="2" BorderBrush="DarkBlue" Margin="5" >
+                <Grid Background="LightSkyBlue" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label Foreground="Green" Content="{Binding Path=ID}"></Label>
+                        <Label Content="{Binding Path=InputSourceType}"></Label>
+                        <Label Content="{Binding Path=DisplayName}"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <Label>Opacity:</Label>
+                        <xctk:DecimalUpDown Value="{Binding Opacity}" Minimum=".1" Maximum="1.0" Increment=".1" ></xctk:DecimalUpDown>
+                        <Label>Fade In Seconds</Label>
+                        <xctk:ValueRangeTextBox ValueDataType="sys:Double" MinValue="0" Value="{Binding Path=FadeInSec}" MinWidth="20"></xctk:ValueRangeTextBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="sourceVideoTemplate">
+            <Border BorderThickness="2" BorderBrush="DarkBlue" Margin="5" >
+                <Grid Background="OrangeRed" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label Foreground="Green" Content="{Binding Path=ID}"></Label>
+                        <Label Content="{Binding Path=InputSourceType}"></Label>
+                        <Label Content="{Binding Path=DisplayName}"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <Label>Opacity:</Label>
+                        <xctk:DecimalUpDown Value="{Binding Opacity}" Minimum=".1" Maximum="1.0" Increment=".1" ></xctk:DecimalUpDown>
+                        <Label>Fade In Seconds</Label>
+                        <xctk:ValueRangeTextBox ValueDataType="sys:Double" MinValue="0" Value="{Binding Path=FadeInSec}" MinWidth="20"></xctk:ValueRangeTextBox>                      
+                        <CheckBox IsChecked="{Binding Loop}"> Looping </CheckBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="sourceColorTemplate">
+            <Border BorderThickness="2" BorderBrush="DarkBlue" Margin="5" >
+                <Grid Background="{Binding Path=Color}" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label Foreground="Green" Content="{Binding Path=ID}"></Label>
+                        <Label Content="{Binding Path=InputSourceType}"></Label>
+                        <Label Content="{Binding Path=DisplayName}"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <Label>Opacity:</Label>
+                        <xctk:DecimalUpDown Value="{Binding Opacity}" Minimum=".1" Maximum="1.0" Increment=".1" ></xctk:DecimalUpDown>
+                        <Label>Fade In Seconds</Label>
+                        <xctk:ValueRangeTextBox ValueDataType="sys:Double" MinValue="0" Value="{Binding Path=FadeInSec}" MinWidth="20"></xctk:ValueRangeTextBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="sourceWebcamTemplate">
+            <Border BorderThickness="2" BorderBrush="DarkBlue" Margin="5" >
+                <Grid Background="YellowGreen" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label Foreground="Green" Content="{Binding Path=ID}"></Label>
+                        <Label Content="{Binding Path=InputSourceType}"></Label>
+                        <Label Content="{Binding Path=DisplayName}"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <Label>Opacity:</Label>
+                        <xctk:DecimalUpDown Value="{Binding Opacity}" Minimum=".1" Maximum="1.0" Increment=".1" ></xctk:DecimalUpDown>
+                        <Label>Fade In Seconds</Label>
+                        <xctk:ValueRangeTextBox ValueDataType="sys:Double" MinValue="0" Value="{Binding Path=FadeInSec}" MinWidth="20"></xctk:ValueRangeTextBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="sourceGifTemplate">
+            <Border BorderThickness="2" BorderBrush="DarkBlue" Margin="5" >
+                <Grid Background="LightGreen" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0">
+                        <Label Foreground="Green" Content="{Binding Path=ID}"></Label>
+                        <Label Content="{Binding Path=InputSourceType}"></Label>
+                        <Label Content="{Binding Path=DisplayName}"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <Label>Opacity:</Label>
+                        <xctk:DecimalUpDown Value="{Binding Opacity}" Minimum=".1" Maximum="1.0" Increment=".1" ></xctk:DecimalUpDown>
+                        <Label>Fade In Seconds</Label>
+                        <xctk:ValueRangeTextBox ValueDataType="sys:Double" MinValue="0" Value="{Binding Path=FadeInSec}" MinWidth="20"></xctk:ValueRangeTextBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="310" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"></RowDefinition>
+            <!-- Menu Row -->
+            <RowDefinition Height="300"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Menu  Grid.Row="0" Grid.Column="0" Background="Silver" HorizontalContentAlignment="Left" Grid.ColumnSpan="3">
+            <MenuItem Header="File" >
+                <MenuItem Header="New Solution" x:Name="newSolution" Click="NewSolution_Click" ></MenuItem>
+                <MenuItem Header="Save Solution" x:Name="saveSolution" Click="SaveSolution_Click" ></MenuItem>
+                <MenuItem Header="Open Solution" x:Name="openSolution" Click="OpenSolution_Click" ></MenuItem>
+                <!--<MenuItem Header="Save Layers" x:Name="SaveLayers" />
+                <MenuItem Header="Load Layers" x:Name="LoadLayers" />-->
+            </MenuItem>
+            <MenuItem Header="Windows">
+                <MenuItem Header="Output Window" Click="OpenOutputWindowClick" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Comm" >
+                <MenuItem Header="remote cue" Click="MenuItem_OnClick"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <GroupBox Header="Surfaces"  Grid.Row="1" Grid.Column="0" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListView x:Name="lvSurfaces"  Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurfacesCollection}}" IsEnabled="{Binding Path=SolutionOpen}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=ID}" >ID</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=LayerName}" >DisplayName</GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Width="50" Click="AddSurfaceButtonClick">Add</Button>
+                    <Button Width="50" Click="RemoveSurfaceButtonClick">Remove</Button>
+
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <!-- Corner Transformations Sliders -->
+        <GroupBox Grid.Row="1" Grid.Column="1" Header="Corners" Margin="5" IsEnabled="{Binding Path=SolutionOpen}">
+            <StackPanel>
+                <GroupBox Header="Top Left" FontSize="10"  BorderThickness="0" Height="66" VerticalAlignment="Top">
+                    <StackPanel Height="55">
+                        <Slider VerticalAlignment="Center" x:Name="sliderTopLeftX" Minimum="-1.6" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderTopLeftX_ValueChanged"  />
+                        <Slider VerticalAlignment="Center" x:Name="sliderTopLeftY" Minimum="-2.5" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderTopLeftY_ValueChanged"  />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Top Right" FontSize="10" BorderThickness="0">
+                    <StackPanel>
+                        <Slider VerticalAlignment="Center" x:Name="sliderTopRightX" Minimum="-1.6" Maximum="3.0" SmallChange="0.001" ValueChanged="SliderTopRightX_ValueChanged" />
+                        <Slider VerticalAlignment="Center" x:Name="sliderTopRightY" Minimum="-2.5" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderTopRightY_ValueChanged" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Bottom Left" FontSize="10" BorderThickness="0" Height="67" VerticalAlignment="Top">
+                    <StackPanel Height="48">
+                        <Slider VerticalAlignment="Center" x:Name="sliderBottomLeftX" Minimum="-1.6" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderBottomLeftX_ValueChanged"  />
+                        <Slider VerticalAlignment="Center" x:Name="sliderBottomLeftY" Minimum="-2.5" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderBottomLeftY_ValueChanged" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Bottom Right" FontSize="10" BorderThickness="0">
+                    <StackPanel>
+                        <Slider VerticalAlignment="Center" x:Name="sliderBottomRightX" Minimum="-1.6" Maximum="3.0" SmallChange="0.001" ValueChanged="SliderBottomRightX_ValueChanged" />
+                        <Slider VerticalAlignment="Center" x:Name="sliderBottomRightY" Minimum="-2.5" Maximum="2.5" SmallChange="0.001" ValueChanged="SliderBottomRightY_ValueChanged"   />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="0" Header="Media Library" Margin="5" IsEnabled="{Binding Path=SolutionOpen}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--<ListView x:Name="lvSurfaces"  Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurfacesCollection}}" >-->
+                <ListView x:Name="lvLibrary" Grid.Row="0" ItemsSource="{Binding Source={StaticResource mediaCollection}}" Grid.ColumnSpan="2">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Ext}">Ext</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=FileName}" >DisplayName</GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <DockPanel Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Stretch">
+                    <Button Width="50" Click="AddMediaClick">Add</Button>
+                    <Button Width="50" Click="RemoveMeidaClick">Remove</Button>
+                    <Button Width="35" Click="AddSourceClick" HorizontalAlignment="Right">-></Button>
+
+                </DockPanel>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Sources"  Margin="5" IsEnabled="{Binding Path=SolutionOpen}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                </Grid.RowDefinitions>
+                <ListBox x:Name="lvSources" HorizontalContentAlignment="Stretch" Grid.Row="0"  
+                         ItemsSource="{Binding Source={StaticResource sourcesCollection}}"
+                         ItemTemplateSelector="{Binding Source={StaticResource sourceDataTemplateSelector}}">
+                </ListBox>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Width="50">Remove</Button>
+                    <Button Width="50" Click="AddCameraSouce">+ Cam</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <xctk:ColorPicker x:Name="colorPicker"></xctk:ColorPicker>
+                        <Button Width="125" Click="AddSolidColorClick">Add Color</Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    <GroupBox Header="Cues" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" IsEnabled="{Binding Path=SolutionOpen}">
+            <l:CuesControl x:Name="cueControl"></l:CuesControl>
+        </GroupBox>
+    </Grid>
+</Window>

@@ -1,0 +1,24 @@
+﻿<Window x:Class="ProjectionMapping.Output" x:Name="outputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ouput" Height="480" Width="640" Background="Black" KeyUp="outputWindow_KeyUp" KeyDown="outputWindow_KeyDown">
+        
+    <Grid>
+        <!-- Viewport3D is the rendering surface. -->
+        <!--<GroupBox>-->
+            <Viewport3D x:Name="Viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Viewport3D.Camera>
+                    <OrthographicCamera x:Name="Camera" FarPlaneDistance="50" NearPlaneDistance="0" LookDirection="0,0,-1" UpDirection="0,1,0" Position="0.5,0.5,1" Width="4" />
+                </Viewport3D.Camera>
+                <ModelVisual3D x:Name="Model">
+                   <ModelVisual3D.Content>
+                    <Model3DGroup x:Name="Models3DGroup"  >
+                             <!--<AmbientLight Color="DarkGray" />
+                            <DirectionalLight Color="White" Direction="-5,-5,-7" />-->
+                        </Model3DGroup>
+                    </ModelVisual3D.Content>
+                </ModelVisual3D>
+            </Viewport3D>
+       <!-- </GroupBox>-->
+    </Grid>
+</Window>

@@ -1,0 +1,13 @@
+
+-disable layer?
+-layer blank - broke, fixed?
+-layer solid color
+-layer fade
+-improve communication code
+-data template
+-flip webcam image - fixed?
+-pre-loading?
+-cue list click
+- up/down arrows cue
+-open new solution needs to reset ui.
+- shared modelcollection - done
